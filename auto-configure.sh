@@ -34,8 +34,16 @@ install_script () {
 	echo "###################################################"
 	echo "##########    Configure dev enviroment   ##########"
 	echo "###################################################"
-	$sh_c 'pacman -S --noconfirm git zsh'
+	$sh_c 'pacman -S --noconfirm git zsh libsecret gnome-keyring'
 	$sh_c 'yay -S --noconfirm visual-studio-code-bin datagrip alacritty'
+	
+	# cat ssh/bash_settings >> ~/.zshrc
+	
+	cat ssh/gnome-keyring-daemon >> ~/.zshrc
+	cp /etc/xdg/autostart/{gnome-keyring-secrets.desktop,gnome-keyring-ssh.desktop} ~/.config/autostart/
+	sed -i '/^OnlyShowIn.*$/d' ~/.config/autostart/gnome-keyring-secrets.desktop
+	sed -i '/^OnlyShowIn.*$/d' ~/.config/autostart/gnome-keyring-ssh.desktop
+	git config --global credential.helper /usr/lib/git-core/git-credential-libsecret
 
 	echo "###################################################"
 	echo "##########              ZSH              ##########"
@@ -63,6 +71,8 @@ install_script () {
 	sdk install java 8.0.252.j9-adpt
 	sdk install gradle 6.4.1
 	npm install -g yarn
+
+
 	echo -e 'export REACT_EDITOR=code' >> ~/.zshrc
 	echo -e 'export TERM=xterm-256color' >> ~/.zshrc
 	echo -e 'export JAVA_HOME=$HOME/.sdkman/candidates/java/current/' >> ~/.zshrc
