@@ -35,28 +35,33 @@ install_script () {
 	echo "##########    Configure dev enviroment   ##########"
 	echo "###################################################"
 	$sh_c 'pacman -S --noconfirm git zsh libsecret gnome-keyring'
-	$sh_c 'yay -S --noconfirm visual-studio-code-bin datagrip alacritty'
+	yay -S --noconfirm visual-studio-code-bin datagrip alacritty
 	
 	# cat ssh/bash_settings >> ~/.zshrc
 	
-	cat ssh/gnome-keyring-daemon >> ~/.zshrc
+	
 	cp /etc/xdg/autostart/{gnome-keyring-secrets.desktop,gnome-keyring-ssh.desktop} ~/.config/autostart/
 	sed -i '/^OnlyShowIn.*$/d' ~/.config/autostart/gnome-keyring-secrets.desktop
 	sed -i '/^OnlyShowIn.*$/d' ~/.config/autostart/gnome-keyring-ssh.desktop
 	git config --global credential.helper /usr/lib/git-core/git-credential-libsecret
+	git config core.fileMode false
 
 	echo "###################################################"
 	echo "##########              ZSH              ##########"
 	echo "###################################################"
+	$sh_c 'rm -rf ~/.oh-my-zsh'
+	$sh_c 'rm -rf ~/.zshrc'
 	sh -c '$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)'
 	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-
+	cat ssh/gnome-keyring-daemon >> ~/.zshrc
+	
 	echo "###################################################"
 	echo "##########          NVM & SDKMAN         ##########"
 	echo "###################################################"
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-	echo -e 'export NVM_DIR="$HOME/.nvm"' >> ~/.zshrc
+	echo -e 'export NVM_DIR="$HOME/.nvm"' >> ~/.
+	
 	echo -e '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.zshrc
 	echo -e '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> ~/.zshrc
 
@@ -84,9 +89,11 @@ install_script () {
 	echo "###################################################"
 	echo "##########            RUST LANG          ##########"
 	echo "###################################################"
-	sh -c 'curl https://sh.rustup.rs -sSf | sh'
+	sh -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
 
-
+	echo ""
+	echo ""
+	echo ""
 	echo "Please add 'zsh-autosuggestions zsh-syntax-highlighting' on plugins into ~/.zshrc "
 
 }
