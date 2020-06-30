@@ -22,6 +22,8 @@ install_script () {
 	fi
 	rm -rf ~/.i3
 	cp -r i3 ~/.i3
+	xdotool key super+shift+r # Reload I3
+	
 	echo "###################################################"
 	echo "##########          Dependencies         ##########"
 	echo "###################################################"
@@ -52,7 +54,7 @@ install_script () {
 	echo "###################################################"
 	$sh_c 'rm -rf ~/.oh-my-zsh'
 	$sh_c 'rm -rf ~/.zshrc'
-	sh -c '$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)'
+	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 	cat ssh/gnome-keyring-daemon >> ~/.zshrc
@@ -61,8 +63,8 @@ install_script () {
 	echo "##########          NVM & SDKMAN         ##########"
 	echo "###################################################"
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-	echo -e 'export NVM_DIR="$HOME/.nvm"' >> ~/.
 	
+	echo -e 'export NVM_DIR="$HOME/.nvm"' >> ~/.zshrc	
 	echo -e '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.zshrc
 	echo -e '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> ~/.zshrc
 
