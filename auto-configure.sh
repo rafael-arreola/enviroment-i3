@@ -24,6 +24,9 @@ install_script () {
 	cp -r i3 ~/.i3
 	xdotool key super+shift+r # Reload I3
 	
+	$sh_c 'pacman --remove palemoon-bin'
+	$sh_c 'pacman -S --noconfirm firefox'
+	
 	echo "###################################################"
 	echo "##########          Dependencies         ##########"
 	echo "###################################################"
