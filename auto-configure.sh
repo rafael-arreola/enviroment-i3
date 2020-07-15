@@ -23,9 +23,11 @@ install_script () {
 	rm -rf ~/.i3
 	cp -r i3 ~/.i3
 	xdotool key super+shift+r # Reload I3
+	$sh_c 'cp ./systemd/numlock /usr/local/bin/numlock'
+	$sh_c 'cp ./systemd/numlock.service /etc/systemd/system/numlock.service'
 	
 	$sh_c 'pacman --remove palemoon-bin'
-	$sh_c 'pacman -S --noconfirm firefox'
+	$sh_c 'pacman -S --noconfirm firefox numlockx'
 	
 	echo "###################################################"
 	echo "##########          Dependencies         ##########"
